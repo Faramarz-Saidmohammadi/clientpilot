@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #eaf8f4;
+  --foreground: #06211a;
+  --card: rgba(255, 255, 255, 0.86);
+  --muted: #15483c;
+  --border: rgba(0, 103, 79, 0.24);
+  --primary: #3ebb9e;
+  --accent: #73e6cb;
+  --deep: #00674f;
+  --ink: #0a3c30;
+  --glow: rgba(62, 187, 158, 0.34);
+  --danger: #e98a3d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: #082d24;
+  --foreground: #ffffff;
+  --card: rgba(9, 48, 39, 0.84);
+  --muted: #d0efe7;
+  --border: rgba(115, 230, 203, 0.3);
+  --primary: #3ebb9e;
+  --accent: #73e6cb;
+  --deep: #00674f;
+  --ink: #0a3c30;
+  --glow: rgba(115, 230, 203, 0.24);
+  --danger: #e98a3d;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  font-family: "Sora", "Plus Jakarta Sans", "Avenir Next", "Segoe UI", sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--foreground);
+}
+
+a {
+  color: color-mix(in oklab, var(--ink) 60%, var(--primary));
+}
+
+* {
+  border-color: var(--border);
+}
+
+.card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 16px 38px -22px rgba(0, 0, 0, 0.35),
+    0 4px 12px -8px rgba(0, 0, 0, 0.22);
+  animation: rise-in 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card::before {
+  display: none;
+}
+
+.app-shell::before,
+.app-shell::after {
+  display: none;
+}
+
+.glass-nav {
+  background: transparent;
+  box-shadow:
+    0 8px 26px -18px rgba(0, 0, 0, 0.35),
+    0 1px 4px -2px rgba(0, 0, 0, 0.25);
+}
+
+.soft-enter {
+  animation: rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .soft-enter {
+    animation: none;
+  }
 }

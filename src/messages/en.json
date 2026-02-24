@@ -1,0 +1,241 @@
+{
+  "brand": "ClientPilot",
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "login": "Login",
+    "getStarted": "Get started"
+  },
+  "hero": {
+    "title": "Run your client work from one clean dashboard.",
+    "subtitle": "Projects, time, invoices, billing and team collaboration in one multi-tenant SaaS workspace.",
+    "cta": "Start free"
+  },
+  "marketing": {
+    "previewTitle": "Dashboard preview",
+    "previewRevenue": "Revenue",
+    "previewHours": "Hours",
+    "footer": "ClientPilot (c) 2026"
+  },
+  "pricing": {
+    "free": "Free",
+    "pro": "Pro",
+    "monthly": "monthly",
+    "upgrade": "Upgrade"
+  },
+  "pricingPage": {
+    "freeTitle": "Free",
+    "freeDescription": "1 workspace, core CRM/projects/time/invoices.",
+    "freeCta": "Start free",
+    "proTitle": "Pro",
+    "proDescription": "Unlimited members, Stripe links, advanced reports, branding.",
+    "proCta": "Upgrade to Pro"
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "privacyBody": "We store only the data required to operate ClientPilot workspaces and billing.",
+    "termsTitle": "Terms of Service",
+    "termsBody": "ClientPilot is provided as-is with commercially reasonable uptime and support."
+  },
+  "app": {
+    "overview": "Overview",
+    "clients": "Clients",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "time": "Time",
+    "invoices": "Invoices",
+    "reports": "Reports",
+    "team": "Team",
+    "settings": "Settings",
+    "billing": "Billing"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "register": "Create account"
+  },
+  "authPages": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create your account"
+  },
+  "loginForm": {
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "signingIn": "Signing in...",
+    "google": "Continue with Google",
+    "invalidCredentials": "Invalid credentials"
+  },
+  "registerForm": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Create account",
+    "creating": "Creating..."
+  },
+  "onboardingPage": {
+    "title": "Create workspace",
+    "workspaceName": "Workspace name",
+    "workspaceSlug": "Workspace slug",
+    "plan": "Plan",
+    "free": "Free",
+    "pro": "Pro",
+    "continue": "Continue",
+    "creating": "Creating...",
+    "failed": "Failed"
+  },
+  "dashboard": {
+    "monthlyRevenue": "Monthly revenue",
+    "trackedHours": "Tracked hours",
+    "openInvoices": "Open invoices",
+    "revenueTrend": "Revenue trend",
+    "chartHint": "Chart module loaded on reports page.",
+    "recentActivity": "Recent activity",
+    "noActivity": "No activity yet."
+  },
+  "clientsPage": {
+    "title": "Clients",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "createdAt": "Created"
+    }
+  },
+  "projectsPage": {
+    "title": "Projects",
+    "statusLabel": "Status",
+    "budgetLabel": "Budget",
+    "status": {
+      "active": "Active",
+      "completed": "Completed",
+      "archived": "Archived",
+      "onHold": "On hold"
+    }
+  },
+  "tasksPage": {
+    "title": "Tasks",
+    "status": {
+      "todo": "Todo",
+      "inProgress": "In progress",
+      "done": "Done"
+    }
+  },
+  "timePage": {
+    "title": "Time tracking",
+    "duration": "Duration",
+    "minutes": "min"
+  },
+  "invoicesPage": {
+    "title": "Invoices",
+    "due": "due",
+    "pdf": "PDF",
+    "email": "Email",
+    "seeReports": "See earnings reports",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    }
+  },
+  "reportsPage": {
+    "earnings": "Earnings",
+    "utilization": "Utilization"
+  },
+  "teamPage": {
+    "title": "Team",
+    "memberFallback": "Member",
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    }
+  },
+  "settingsPage": {
+    "title": "Workspace settings",
+    "description": "Branding, timezone and currency settings can be configured here."
+  },
+  "billingPage": {
+    "title": "Billing",
+    "description": "Manage subscription, invoices and plan status."
+  },
+  "projectDetailPage": {
+    "notFound": "Project not found.",
+    "noDescription": "No description",
+    "files": "Files",
+    "kb": "KB",
+    "tabsTitle": "Tabs",
+    "tabs": {
+      "overview": "Overview",
+      "tasks": "Tasks",
+      "time": "Time",
+      "invoices": "Invoices",
+      "files": "Files",
+      "activity": "Activity"
+    }
+  },
+  "appError": {
+    "title": "Something went wrong"
+  },
+  "globalSearch": {
+    "placeholder": "Search clients, projects, invoices..."
+  },
+  "newClientForm": {
+    "namePlaceholder": "Client name",
+    "emailPlaceholder": "Email",
+    "adding": "Adding...",
+    "submit": "Add client"
+  },
+  "newProjectForm": {
+    "namePlaceholder": "Project name",
+    "budgetPlaceholder": "Budget",
+    "selectClient": "Select client",
+    "creating": "Creating...",
+    "submit": "Create project"
+  },
+  "newTaskForm": {
+    "titlePlaceholder": "Task title",
+    "projectPlaceholder": "Project",
+    "adding": "Adding...",
+    "submit": "Add task",
+    "status": {
+      "todo": "Todo",
+      "inProgress": "In progress",
+      "done": "Done"
+    }
+  },
+  "timeEntryForm": {
+    "projectPlaceholder": "Project",
+    "notePlaceholder": "Note",
+    "saving": "Saving...",
+    "submit": "Add"
+  },
+  "invoiceForm": {
+    "clientPlaceholder": "Client",
+    "projectPlaceholder": "Project",
+    "itemPlaceholder": "Item",
+    "creating": "Creating...",
+    "submit": "Create invoice",
+    "markPaid": "Mark paid"
+  },
+  "inviteForm": {
+    "emailPlaceholder": "member@email.com",
+    "inviting": "Inviting...",
+    "submit": "Invite",
+    "roles": {
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    }
+  },
+  "projectFileUpload": {
+    "uploading": "Uploading...",
+    "submit": "Upload"
+  },
+  "upgradeButton": {
+    "label": "Upgrade to Pro"
+  }
+}

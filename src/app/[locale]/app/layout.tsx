@@ -1,0 +1,52 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { getSession } from "@/lib/auth/session";
+import { connectDb } from "@/lib/db";
+import { Membership } from "@/models";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Topbar } from "@/components/layout/topbar";
+
+export default async function AppLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = locale === "fa" ? "fa" : "en";
+  const session = await getSession();
+  if (!session?.user) redirect(`/${locale}/login`);
+
+  await connectDb();
+  const membership = await Membership.findOne({ userId: session.user.id }).lean();
+  if (!membership) redirect(`/${locale}/onboarding`);
+
+  const t = await getTranslations({ locale: safeLocale, namespace: "app" });
+  const items = [
+    ["", t("overview")],
+    ["/clients", t("clients")],
+    ["/projects", t("projects")],
+    ["/tasks", t("tasks")],
+    ["/time", t("time")],
+    ["/invoices", t("invoices")],
+    ["/reports", t("reports")],
+    ["/team", t("team")],
+    ["/settings", t("settings")],
+    ["/billing", t("billing")]
+  ].map(([href, label]) => ({ href: `/${locale}/app${href}`, label }));
+
+  return (
+    <div className="soft-enter flex min-h-screen">
+      <Sidebar items={items} />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar title={t("overview")} items={items} locale={safeLocale} />
+        <main className="flex-1 p-4 md:p-6">
+          <div className="soft-enter">{children}</div>
+        </main>
+      </div>
+      <Link href={`/${locale}`} className="sr-only">Home</Link>
+    </div>
+  );
+}

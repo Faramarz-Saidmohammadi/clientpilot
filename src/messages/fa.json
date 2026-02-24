@@ -1,0 +1,241 @@
+{
+  "brand": "ClientPilot",
+  "nav": {
+    "features": "ویژگی‌ها",
+    "pricing": "قیمت‌گذاری",
+    "faq": "سوالات",
+    "login": "ورود",
+    "getStarted": "شروع کنید"
+  },
+  "hero": {
+    "title": "کارهای مشتریان را از یک داشبورد منظم مدیریت کنید.",
+    "subtitle": "پروژه‌ها، زمان، فاکتورها، پرداخت و همکاری تیمی در یک فضای SaaS چندکاربره.",
+    "cta": "شروع رایگان"
+  },
+  "marketing": {
+    "previewTitle": "پیش‌نمایش داشبورد",
+    "previewRevenue": "درآمد",
+    "previewHours": "ساعت",
+    "footer": "ClientPilot © 2026"
+  },
+  "pricing": {
+    "free": "رایگان",
+    "pro": "حرفه‌ای",
+    "monthly": "ماهانه",
+    "upgrade": "ارتقا"
+  },
+  "pricingPage": {
+    "freeTitle": "رایگان",
+    "freeDescription": "۱ فضای کاری، امکانات پایه CRM/پروژه/زمان/فاکتور.",
+    "freeCta": "شروع رایگان",
+    "proTitle": "حرفه‌ای",
+    "proDescription": "اعضای نامحدود، لینک‌های Stripe، گزارش‌های پیشرفته و برندینگ.",
+    "proCta": "ارتقا به حرفه‌ای"
+  },
+  "legal": {
+    "privacyTitle": "حریم خصوصی",
+    "privacyBody": "ما فقط داده‌های لازم برای اجرای فضاهای کاری و صورتحساب ClientPilot را نگه‌داری می‌کنیم.",
+    "termsTitle": "شرایط استفاده",
+    "termsBody": "ClientPilot به‌صورت موجود ارائه می‌شود و پایداری و پشتیبانی معقول تجاری فراهم می‌کند."
+  },
+  "app": {
+    "overview": "نمای کلی",
+    "clients": "مشتریان",
+    "projects": "پروژه‌ها",
+    "tasks": "وظایف",
+    "time": "زمان",
+    "invoices": "فاکتورها",
+    "reports": "گزارش‌ها",
+    "team": "تیم",
+    "settings": "تنظیمات",
+    "billing": "صورتحساب"
+  },
+  "auth": {
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "login": "ورود",
+    "register": "ایجاد حساب"
+  },
+  "authPages": {
+    "welcomeBack": "خوش برگشتید",
+    "createAccount": "حساب خود را ایجاد کنید"
+  },
+  "loginForm": {
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "submit": "ورود",
+    "signingIn": "در حال ورود...",
+    "google": "ادامه با گوگل",
+    "invalidCredentials": "ایمیل یا رمز عبور نادرست است"
+  },
+  "registerForm": {
+    "name": "نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "submit": "ایجاد حساب",
+    "creating": "در حال ایجاد..."
+  },
+  "onboardingPage": {
+    "title": "ایجاد فضای کاری",
+    "workspaceName": "نام فضای کاری",
+    "workspaceSlug": "شناسه فضای کاری",
+    "plan": "پلن",
+    "free": "رایگان",
+    "pro": "حرفه‌ای",
+    "continue": "ادامه",
+    "creating": "در حال ایجاد...",
+    "failed": "خطا"
+  },
+  "dashboard": {
+    "monthlyRevenue": "درآمد ماهانه",
+    "trackedHours": "ساعت‌های ثبت‌شده",
+    "openInvoices": "فاکتورهای باز",
+    "revenueTrend": "روند درآمد",
+    "chartHint": "ماژول نمودار در صفحه گزارش‌ها بارگذاری می‌شود.",
+    "recentActivity": "فعالیت‌های اخیر",
+    "noActivity": "هنوز فعالیتی ثبت نشده است."
+  },
+  "clientsPage": {
+    "title": "مشتریان",
+    "columns": {
+      "name": "نام",
+      "email": "ایمیل",
+      "createdAt": "تاریخ ایجاد"
+    }
+  },
+  "projectsPage": {
+    "title": "پروژه‌ها",
+    "statusLabel": "وضعیت",
+    "budgetLabel": "بودجه",
+    "status": {
+      "active": "فعال",
+      "completed": "تکمیل‌شده",
+      "archived": "بایگانی‌شده",
+      "onHold": "در انتظار"
+    }
+  },
+  "tasksPage": {
+    "title": "وظایف",
+    "status": {
+      "todo": "برای انجام",
+      "inProgress": "در حال انجام",
+      "done": "انجام شده"
+    }
+  },
+  "timePage": {
+    "title": "ثبت زمان",
+    "duration": "مدت",
+    "minutes": "دقیقه"
+  },
+  "invoicesPage": {
+    "title": "فاکتورها",
+    "due": "سررسید",
+    "pdf": "پی‌دی‌اف",
+    "email": "ایمیل",
+    "seeReports": "مشاهده گزارش درآمد",
+    "status": {
+      "draft": "پیش‌نویس",
+      "sent": "ارسال‌شده",
+      "paid": "پرداخت‌شده",
+      "overdue": "معوق"
+    }
+  },
+  "reportsPage": {
+    "earnings": "درآمد",
+    "utilization": "بهره‌وری"
+  },
+  "teamPage": {
+    "title": "تیم",
+    "memberFallback": "عضو",
+    "roles": {
+      "owner": "مالک",
+      "admin": "مدیر",
+      "member": "عضو",
+      "viewer": "بیننده"
+    }
+  },
+  "settingsPage": {
+    "title": "تنظیمات فضای کاری",
+    "description": "برندینگ، منطقه زمانی و تنظیمات ارز را می‌توانید اینجا پیکربندی کنید."
+  },
+  "billingPage": {
+    "title": "صورتحساب",
+    "description": "اشتراک، فاکتورها و وضعیت پلن را مدیریت کنید."
+  },
+  "projectDetailPage": {
+    "notFound": "پروژه پیدا نشد.",
+    "noDescription": "بدون توضیح",
+    "files": "فایل‌ها",
+    "kb": "کیلوبایت",
+    "tabsTitle": "تب‌ها",
+    "tabs": {
+      "overview": "نمای کلی",
+      "tasks": "وظایف",
+      "time": "زمان",
+      "invoices": "فاکتورها",
+      "files": "فایل‌ها",
+      "activity": "فعالیت"
+    }
+  },
+  "appError": {
+    "title": "مشکلی پیش آمده است"
+  },
+  "globalSearch": {
+    "placeholder": "جستجو در مشتریان، پروژه‌ها و فاکتورها..."
+  },
+  "newClientForm": {
+    "namePlaceholder": "نام مشتری",
+    "emailPlaceholder": "ایمیل",
+    "adding": "در حال افزودن...",
+    "submit": "افزودن مشتری"
+  },
+  "newProjectForm": {
+    "namePlaceholder": "نام پروژه",
+    "budgetPlaceholder": "بودجه",
+    "selectClient": "انتخاب مشتری",
+    "creating": "در حال ایجاد...",
+    "submit": "ایجاد پروژه"
+  },
+  "newTaskForm": {
+    "titlePlaceholder": "عنوان وظیفه",
+    "projectPlaceholder": "پروژه",
+    "adding": "در حال افزودن...",
+    "submit": "افزودن وظیفه",
+    "status": {
+      "todo": "برای انجام",
+      "inProgress": "در حال انجام",
+      "done": "انجام شده"
+    }
+  },
+  "timeEntryForm": {
+    "projectPlaceholder": "پروژه",
+    "notePlaceholder": "یادداشت",
+    "saving": "در حال ذخیره...",
+    "submit": "افزودن"
+  },
+  "invoiceForm": {
+    "clientPlaceholder": "مشتری",
+    "projectPlaceholder": "پروژه",
+    "itemPlaceholder": "آیتم",
+    "creating": "در حال ایجاد...",
+    "submit": "ایجاد فاکتور",
+    "markPaid": "تسویه شد"
+  },
+  "inviteForm": {
+    "emailPlaceholder": "member@email.com",
+    "inviting": "در حال دعوت...",
+    "submit": "دعوت",
+    "roles": {
+      "admin": "مدیر",
+      "member": "عضو",
+      "viewer": "بیننده"
+    }
+  },
+  "projectFileUpload": {
+    "uploading": "در حال بارگذاری...",
+    "submit": "بارگذاری"
+  },
+  "upgradeButton": {
+    "label": "ارتقا به حرفه‌ای"
+  }
+}
