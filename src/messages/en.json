@@ -18,6 +18,46 @@
     "previewHours": "Hours",
     "footer": "ClientPilot (c) 2026"
   },
+  "home": {
+    "features": {
+      "title": "Everything you need in one workspace",
+      "subtitle": "Run operations, finance, and team collaboration from one place.",
+      "items": {
+        "clients": "Client CRM with notes and contacts",
+        "projects": "Project planning and progress tracking",
+        "invoices": "Professional invoices with PDF and email",
+        "team": "Role-based team collaboration",
+        "billing": "Stripe billing and subscription sync",
+        "audit": "Audit logs for important actions"
+      }
+    },
+    "workflow": {
+      "title": "Simple workflow",
+      "stepLabel": "Step",
+      "steps": {
+        "step1": "Create your workspace and onboard your team",
+        "step2": "Track projects, tasks, and billable time",
+        "step3": "Send invoices and get paid faster"
+      }
+    },
+    "trust": {
+      "title": "Built for daily operations",
+      "stats": {
+        "activeWorkspaces": "Active workspaces",
+        "invoicesMonthly": "Invoices generated monthly",
+        "avgTimeSaved": "Average time saved / week",
+        "uptime": "Platform uptime"
+      }
+    },
+    "finalCta": {
+      "title": "Start running your client business better",
+      "subtitle": "Set up your workspace in minutes and invite your team.",
+      "button": "Create workspace"
+    }
+  },
+  "topbar": {
+    "logout": "Log out"
+  },
   "pricing": {
     "free": "Free",
     "pro": "Pro",
@@ -158,6 +198,17 @@
     "title": "Workspace settings",
     "description": "Branding, timezone and currency settings can be configured here."
   },
+  "settingsForm": {
+    "name": "Workspace name",
+    "slug": "Workspace slug",
+    "timezone": "Timezone",
+    "currency": "Currency",
+    "logoUrl": "Logo URL",
+    "save": "Save settings",
+    "saving": "Saving...",
+    "saved": "Settings saved.",
+    "saveFailed": "Failed to save settings."
+  },
   "billingPage": {
     "title": "Billing",
     "description": "Manage subscription, invoices and plan status."
@@ -181,7 +232,13 @@
     "title": "Something went wrong"
   },
   "globalSearch": {
-    "placeholder": "Search clients, projects, invoices..."
+    "placeholder": "Search clients, projects, invoices...",
+    "noResults": "No results",
+    "types": {
+      "client": "Client",
+      "project": "Project",
+      "invoice": "Invoice"
+    }
   },
   "newClientForm": {
     "namePlaceholder": "Client name",

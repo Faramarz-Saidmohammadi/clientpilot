@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { GlobalSearch } from "@/components/shared/global-search";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
+import { LogoutButton } from "@/components/shared/logout-button";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
 type Item = { href: string; label: string };
@@ -12,9 +13,12 @@ export function Topbar({ title, items, locale }: { title: string; items: Item[];
         <MobileNav items={items} />
         <h1 className="text-lg font-semibold">{title}</h1>
       </div>
-      <div className="flex items-center gap-2">
-        <GlobalSearch />
+      <div className="ml-auto flex min-w-0 items-center gap-2">
+        <div className="hidden md:block">
+          <GlobalSearch />
+        </div>
         <LocaleSwitcher locale={locale} />
+        <LogoutButton locale={locale} />
         <ThemeToggle />
       </div>
     </div>

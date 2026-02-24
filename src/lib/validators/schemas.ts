@@ -45,3 +45,18 @@ export const invoiceSchema = z.object({
     })
   )
 });
+
+export const workspaceSettingsSchema = z.object({
+  name: z.string().min(2).max(80),
+  slug: z
+    .string()
+    .min(2)
+    .max(50)
+    .regex(/^[a-z0-9-]+$/, "Slug must contain lowercase letters, numbers and dashes"),
+  timezone: z.string().min(2).max(80),
+  currency: z
+    .string()
+    .length(3)
+    .regex(/^[A-Z]{3}$/, "Currency must be a 3-letter ISO code"),
+  logoUrl: z.string().url().optional().or(z.literal(""))
+});

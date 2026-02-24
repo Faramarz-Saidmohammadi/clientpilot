@@ -16,14 +16,10 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} dir={localeDirection[locale]} suppressHydrationWarning>
-      <body className="app-shell antialiased">
-        <AuthProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </AuthProvider>
-      </body>
-    </html>
+    <AuthProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <div lang={locale} dir={localeDirection[locale]}>{children}</div>
+      </NextIntlClientProvider>
+    </AuthProvider>
   );
 }
