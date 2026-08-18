@@ -1,28 +1,23 @@
 import { Resend } from "resend";
-import nodemailer from "nodemailer";
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+function getEmailClient() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("Missing RESEND_API_KEY");
+  return new Resend(key);
+}
 
 export async function sendEmail(to: string, subject: string, html: string) {
-  if (resend) {
-    await resend.emails.send({
-      from: process.env.EMAIL_FROM || "ClientPilot <no-reply@clientpilot.app>",
-      to,
-      subject,
-      html
-    });
-    return;
-  }
+  const from = process.env.EMAIL_FROM;
+  if (!from) throw new Error("Missing EMAIL_FROM");
 
-  const transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    }
+  const { error } = await getEmailClient().emails.send({
+    from,
+    to,
+    subject,
+    html
   });
 
-  await transport.sendMail({ from: process.env.EMAIL_FROM, to, subject, html });
+  if (error) {
+    throw new Error(`Email delivery failed: ${error.message}`);
+  }
 }
