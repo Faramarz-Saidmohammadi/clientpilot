@@ -1,106 +1,141 @@
 # ClientPilot
 
-Production-ready multi-tenant SaaS for freelancers/agencies: clients, projects, tasks, time tracking, invoicing, team collaboration, and Stripe billing.
+ClientPilot is a multi-tenant workspace for managing client relationships, projects, tasks, time, invoices, team access, reporting, and subscription billing from one application.
 
-## Stack
-- Next.js (App Router) + TypeScript (strict)
-- TailwindCSS + shadcn-style primitives + lucide-react
-- MongoDB + Mongoose
-- Auth.js / NextAuth (Credentials + Google)
-- Stripe Checkout + webhooks (Free/Pro)
-- Email via Resend (fallback: Nodemailer SMTP)
-- i18n via next-intl (`en` LTR, `fa` RTL)
-- Charts via recharts
-- Tables via @tanstack/react-table
-- Validation via zod + react-hook-form
-- Tests: Vitest + Playwright
-- Docker Compose for local MongoDB
+## Product Capabilities
 
-## Quick Start
-1. Install dependencies
+- Client CRM with contacts and notes
+- Project and task management
+- Time tracking with billable utilization reporting
+- Invoice creation, PDF delivery, email delivery, and payment status workflows
+- Workspace-scoped dashboard analytics and six-month revenue trends
+- Team membership with role-based access control
+- Stripe subscription billing and webhook synchronization
+- Audit logging for important workspace actions
+- English and Dari interfaces with LTR/RTL support
+- Responsive light and dark themes
+
+## Technology Stack
+
+### Application
+- Next.js App Router
+- React 19
+- TypeScript
+- Tailwind CSS
+- Radix UI primitives
+- Lucide icons
+- Recharts
+- TanStack Table
+
+### Backend and Data
+- MongoDB
+- Mongoose
+- Server Actions and route handlers
+- Zod validation
+
+### Authentication and Integrations
+- NextAuth with credentials and Google sign-in
+- Stripe Checkout and webhooks
+- Resend transactional email
+
+### Quality
+- ESLint
+- Vitest
+- Playwright
+- GitHub Actions
+- Production dependency auditing
+
+## Architecture
+
+ClientPilot isolates application data by workspace. Domain records carry a `workspaceId`, and server-side membership guards resolve the authenticated user's active workspace before protected actions execute.
+
+Key boundaries include:
+
+- **Authentication:** session and provider configuration under `src/lib/auth`
+- **Authorization:** role hierarchy and workspace membership checks under `src/lib/auth/rbac.ts`
+- **Workspace context:** shared tenant resolution under `src/lib/workspace.ts`
+- **Domain actions:** server-side operations under `src/actions`
+- **Persistence:** Mongoose models under `src/models`
+- **Billing:** Stripe integration under `src/lib/billing` and `/api/stripe/*`
+- **Transactional email:** Resend-based delivery under `src/lib/email`
+- **Internationalization:** localized English and Dari message catalogs with RTL direction for Dari
+
+The dashboard and reports use workspace-scoped database aggregates rather than hard-coded portfolio metrics.
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 22 or newer
+- npm
+- MongoDB, locally or remotely
+
+### Setup
+
 ```bash
 npm install
-```
-2. Start MongoDB
-```bash
-docker compose up -d
-```
-3. Configure environment
-```bash
 cp .env.example .env.local
-```
-4. Seed demo data
-```bash
+docker compose up -d
 npm run seed
-```
-5. Run app
-```bash
 npm run dev
 ```
 
-Open `http://localhost:3000/en`.
+Open `http://localhost:3000/en` for English or `http://localhost:3000/fa` for Dari.
 
-## Demo Login
-- Email: `owner@clientpilot.local`
-- Password: `Passw0rd!`
+The seed script creates local demonstration data for development. Review `scripts/seed.ts` before using it against any non-local database.
 
-## Required Env Vars
-See `.env.example`.
+## Environment Configuration
 
-Key values to configure externally:
-- Google OAuth credentials from Google Cloud Console
-- Stripe keys + product price IDs from Stripe Dashboard
-- Stripe webhook secret from `stripe listen --forward-to localhost:3000/api/stripe/webhook`
-- Resend API key from Resend dashboard (or SMTP fallback)
+Use `.env.example` as the reference. Configure real credentials outside version control.
 
-## Stripe Setup
-1. Create product/price for Pro plan in Stripe.
-2. Put price in `STRIPE_PRICE_PRO`.
-3. Run webhook forwarder:
+Core groups include:
+
+- MongoDB connection
+- authentication secret and Google OAuth credentials
+- Stripe secret, price IDs, and webhook secret
+- Resend API key and verified sender address
+
+Never commit production credentials or populated environment files.
+
+## Testing and Verification
+
 ```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
-```
-4. Copy signing secret to `STRIPE_WEBHOOK_SECRET`.
-
-## Testing
-Unit tests:
-```bash
-npm run test
-```
-E2E tests:
-```bash
-npx playwright install
+npm run lint
+npm test
+npm run build
 npm run test:e2e
+npm audit --omit=dev --audit-level=high
 ```
 
-## Build
+Playwright starts the application automatically and validates the public conversion path in English as well as RTL rendering in Dari.
+
+GitHub Actions runs the same quality categories on pull requests: lint, unit tests, production build, production dependency audit, and browser-level E2E verification with MongoDB.
+
+## Useful Commands
+
 ```bash
+npm run dev
 npm run build
 npm run start
-```
-
-## Deployment (Vercel + MongoDB Atlas)
-1. Create MongoDB Atlas cluster and user.
-2. Set `MONGODB_URI` in Vercel project env variables.
-3. Add all auth/stripe/email env vars in Vercel.
-4. Deploy from `main` branch.
-5. Configure Stripe webhook URL to `https://your-domain/api/stripe/webhook`.
-
-## Architecture Notes
-- Multi-tenant via `workspaceId` on domain models
-- Server-side RBAC guard (`requireMembership`) on all domain actions
-- Audit logs for write actions
-- In-memory rate limiting on sensitive actions (login/register/invite)
-- Local uploads in dev with metadata persisted in Mongo; replace adapter for S3/R2 in prod
-
-## Commands
-```bash
-npm install
-npm run dev
 npm run lint
-npm run test
+npm run format
+npm test
+npm run test:watch
 npm run test:e2e
-npm run build
 npm run seed
 ```
 
+## Deployment Notes
+
+ClientPilot can run on a Node-compatible deployment platform with MongoDB and the required environment variables configured. Before production use:
+
+1. Configure a production MongoDB database and restricted database user.
+2. Set authentication, Google OAuth, Stripe, and email credentials in the deployment environment.
+3. Configure the public authentication URL for the production domain.
+4. Register the production Stripe webhook endpoint.
+5. Use durable object storage instead of the development-oriented local upload adapter where required by the hosting environment.
+6. Run the full CI-equivalent verification suite before release.
+
+## Security
+
+Security-sensitive changes should preserve tenant isolation, authorization checks, input validation, webhook verification, and secret handling. See `SECURITY.md` for reporting guidance and review expectations.
