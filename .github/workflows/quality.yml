@@ -1,0 +1,101 @@
+name: ClientPilot Quality
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      MONGODB_URI: mongodb://127.0.0.1:27017/clientpilot-ci
+      AUTH_SECRET: clientpilot-ci-secret-at-least-thirty-two-characters
+      NEXTAUTH_URL: http://127.0.0.1:3000
+      GOOGLE_CLIENT_ID: ci-google-client
+      GOOGLE_CLIENT_SECRET: ci-google-secret
+      STRIPE_SECRET_KEY: sk_test_ci_placeholder
+      STRIPE_PRICE_FREE: price_free_ci
+      STRIPE_PRICE_PRO: price_pro_ci
+      STRIPE_WEBHOOK_SECRET: whsec_ci_placeholder
+      RESEND_API_KEY: re_ci_placeholder
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=high
+
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand(\"ping\").ok'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CI: "true"
+      MONGODB_URI: mongodb://127.0.0.1:27017/clientpilot-e2e
+      AUTH_SECRET: clientpilot-e2e-secret-at-least-thirty-two-characters
+      NEXTAUTH_URL: http://127.0.0.1:3000
+      GOOGLE_CLIENT_ID: e2e-google-client
+      GOOGLE_CLIENT_SECRET: e2e-google-secret
+      STRIPE_SECRET_KEY: sk_test_e2e_placeholder
+      STRIPE_PRICE_FREE: price_free_e2e
+      STRIPE_PRICE_PRO: price_pro_e2e
+      STRIPE_WEBHOOK_SECRET: whsec_e2e_placeholder
+      RESEND_API_KEY: re_e2e_placeholder
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clientpilot-playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
