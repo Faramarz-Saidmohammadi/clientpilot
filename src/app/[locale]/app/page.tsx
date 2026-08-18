@@ -14,7 +14,7 @@ export default async function AppOverviewPage({
 }) {
   const { locale } = await params;
   const safeLocale = locale === "fa" ? "fa" : "en";
-  const t = await getTranslations({ locale: safeLocale, namespace: "dashboard" });
+  const t = await getTranslations({ locale: safeLocale });
   const [metrics, logs] = await Promise.all([
     getDashboardMetrics(),
     listAuditLogs().catch(() => []) as Promise<RawAudit[]>
@@ -28,22 +28,22 @@ export default async function AppOverviewPage({
 
   const cards = [
     {
-      label: t("monthlyRevenue"),
+      label: t("dashboard.monthlyRevenue"),
       value: money.format(metrics.monthlyRevenue),
       icon: WalletCards
     },
     {
-      label: t("trackedHours"),
+      label: t("dashboard.trackedHours"),
       value: `${metrics.trackedHours}h`,
       icon: Clock3
     },
     {
-      label: t("openInvoices"),
+      label: t("dashboard.openInvoices"),
       value: String(metrics.openInvoices),
       icon: FileText
     },
     {
-      label: t("activeProjects"),
+      label: t("projectsPage.title"),
       value: String(metrics.activeProjects),
       icon: BriefcaseBusiness
     }
@@ -69,19 +69,16 @@ export default async function AppOverviewPage({
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <Card className="p-5 md:p-6">
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold">{t("revenueTrend")}</h2>
-              <p className="mt-1 text-sm text-[var(--muted)]">{t("revenueTrendDescription")}</p>
-            </div>
+          <div className="mb-5">
+            <h2 className="text-lg font-semibold">{t("dashboard.revenueTrend")}</h2>
           </div>
           <RevenueChart data={metrics.revenueTrend} currency={metrics.currency} />
         </Card>
 
         <Card className="p-5 md:p-6">
-          <h2 className="text-lg font-semibold">{t("recentActivity")}</h2>
+          <h2 className="text-lg font-semibold">{t("dashboard.recentActivity")}</h2>
           <div className="mt-4 space-y-3 text-sm">
-            {logs.length === 0 ? <p className="text-[var(--muted)]">{t("noActivity")}</p> : null}
+            {logs.length === 0 ? <p className="text-[var(--muted)]">{t("dashboard.noActivity")}</p> : null}
             {logs.slice(0, 8).map((log) => (
               <div key={String(log._id)} className="rounded-xl border border-[var(--border)] p-3">
                 <p className="font-medium">{log.action}</p>
