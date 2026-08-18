@@ -22,9 +22,7 @@ jobs:
           node-version: 22
 
       - name: Refresh dependency metadata
-        run: |
-          npm install --package-lock-only
-          npm update --package-lock-only
+        run: npm install --package-lock-only
 
       - name: Commit refreshed lockfile
         run: |
