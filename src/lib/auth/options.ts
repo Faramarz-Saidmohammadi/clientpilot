@@ -12,6 +12,9 @@ const credentialsSchema = z.object({
   password: z.string().min(8)
 });
 
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   pages: {
@@ -25,28 +28,53 @@ export const authOptions: NextAuthOptions = {
         const parsed = credentialsSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
-        const limited = rateLimit(`login:${parsed.data.email.toLowerCase()}`, 10, 60_000);
+        const limited = rateLimit(
+          `login:${parsed.data.email.toLowerCase()}`,
+          10,
+          60_000
+        );
         if (!limited.ok) return null;
 
         await connectDb();
-        const user = await User.findOne({ email: parsed.data.email.toLowerCase() }).lean();
+        const user = await User.findOne({
+          email: parsed.data.email.toLowerCase()
+        }).lean();
         if (!user || !user.passwordHash) return null;
-        const ok = await bcrypt.compare(parsed.data.password, user.passwordHash);
+        const ok = await bcrypt.compare(
+          parsed.data.password,
+          user.passwordHash
+        );
         if (!ok) return null;
-        return { id: String(user._id), email: user.email, name: user.name || undefined, image: user.image || undefined };
+        return {
+          id: String(user._id),
+          email: user.email,
+          name: user.name || undefined,
+          image: user.image || undefined
+        };
       }
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
-    })
+    ...(googleClientId && googleClientSecret
+      ? [
+          GoogleProvider({
+            clientId: googleClientId,
+            clientSecret: googleClientSecret
+          })
+        ]
+      : [])
   ],
   callbacks: {
     async signIn({ user }) {
+      if (!user.email) return false;
       await connectDb();
-      const existing = await User.findOne({ email: user.email }).lean();
+      const email = user.email.toLowerCase();
+      const existing = await User.findOne({ email }).lean();
       if (!existing) {
-        await User.create({ email: user.email, name: user.name, image: user.image, emailVerified: new Date() });
+        await User.create({
+          email,
+          name: user.name,
+          image: user.image,
+          emailVerified: new Date()
+        });
       }
       return true;
     },
@@ -56,6 +84,8 @@ export const authOptions: NextAuthOptions = {
       const user = await User.findOne({ email: token.email }).lean();
       if (!user) return token;
       token.sub = String(user._id);
+      delete token.workspaceId;
+      delete token.role;
       const membership = await Membership.findOne({ userId: user._id }).lean();
       if (membership) {
         token.workspaceId = String(membership.workspaceId);

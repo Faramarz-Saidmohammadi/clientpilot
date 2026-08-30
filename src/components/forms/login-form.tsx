@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm({ locale }: { locale: string }) {
+export function LoginForm({
+  locale,
+  googleEnabled
+}: {
+  locale: string;
+  googleEnabled: boolean;
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations("loginForm");
@@ -20,17 +26,22 @@ export function LoginForm({ locale }: { locale: string }) {
         setLoading(true);
         setError(null);
         const fd = new FormData(e.currentTarget);
-        const res = await signIn("credentials", {
-          email: fd.get("email"),
-          password: fd.get("password"),
-          redirect: false
-        });
-        setLoading(false);
-        if (res?.error) {
+        try {
+          const res = await signIn("credentials", {
+            email: fd.get("email"),
+            password: fd.get("password"),
+            redirect: false
+          });
+          if (res?.error) {
+            setError(t("invalidCredentials"));
+            return;
+          }
+          window.location.href = `/${locale}/app`;
+        } catch {
           setError(t("invalidCredentials"));
-          return;
+        } finally {
+          setLoading(false);
         }
-        window.location.href = `/${locale}/app`;
       }}
     >
       <div>
@@ -45,9 +56,16 @@ export function LoginForm({ locale }: { locale: string }) {
       <Button disabled={loading} className="w-full">
         {loading ? t("signingIn") : t("submit")}
       </Button>
-      <Button type="button" variant="outline" className="w-full" onClick={() => signIn("google", { callbackUrl: `/${locale}/app` })}>
-        {t("google")}
-      </Button>
+      {googleEnabled ? (
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={() => signIn("google", { callbackUrl: `/${locale}/app` })}
+        >
+          {t("google")}
+        </Button>
+      ) : null}
     </form>
   );
 }

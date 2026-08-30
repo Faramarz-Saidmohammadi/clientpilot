@@ -7,18 +7,38 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
-export function DataTable<TData, TValue>({ columns, data }: { columns: ColumnDef<TData, TValue>[]; data: TData[] }) {
-  const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
+export function DataTable<TData, TValue>({
+  columns,
+  data
+}: {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}) {
+  // TanStack Table intentionally returns non-memoizable functions; React Compiler safely skips this hook.
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel()
+  });
 
   return (
     <div className="overflow-x-auto rounded-md border">
       <table className="w-full text-sm">
         <thead>
           {table.getHeaderGroups().map((hg) => (
-            <tr key={hg.id} className="border-b bg-[color-mix(in_oklab,var(--background)_45%,transparent)]">
+            <tr
+              key={hg.id}
+              className="border-b bg-[color-mix(in_oklab,var(--background)_45%,transparent)]"
+            >
               {hg.headers.map((header) => (
                 <th key={header.id} className="px-3 py-2 text-left font-medium">
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </th>
               ))}
             </tr>

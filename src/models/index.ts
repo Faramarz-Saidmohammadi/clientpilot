@@ -7,6 +7,7 @@ export * from "./Project";
 export * from "./Task";
 export * from "./TimeEntry";
 export * from "./Invoice";
+export * from "./InvoiceCounter";
 export * from "./InvoiceItem";
 export * from "./File";
 export * from "./AuditLog";
