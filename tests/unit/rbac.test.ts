@@ -42,6 +42,21 @@ describe("workspace authorization", () => {
     });
   });
 
+  it("resolves a new workspace while the session token is refreshing", async () => {
+    getSession.mockResolvedValue({ user: { id: "user-1" } });
+    lean.mockResolvedValue({
+      role: "owner",
+      workspaceId: "507f1f77bcf86cd799439011"
+    });
+
+    await expect(requireMembership("owner")).resolves.toEqual({
+      userId: "user-1",
+      workspaceId: "507f1f77bcf86cd799439011",
+      role: "owner"
+    });
+    expect(findOne).toHaveBeenCalledWith({ userId: "user-1" });
+  });
+
   it("enforces the minimum role", async () => {
     lean.mockResolvedValue({
       role: "viewer",

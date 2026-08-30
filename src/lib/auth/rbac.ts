@@ -9,13 +9,14 @@ type Role = (typeof hierarchy)[number];
 
 export async function requireMembership(minRole: Role = "viewer") {
   const session = await getSession();
-  if (!session?.user?.id || !session.user.workspaceId)
-    throw new HttpError(401, "Unauthorized");
+  if (!session?.user?.id) throw new HttpError(401, "Unauthorized");
 
   await connectDb();
   const membership = await Membership.findOne({
     userId: session.user.id,
-    workspaceId: session.user.workspaceId
+    ...(session.user.workspaceId
+      ? { workspaceId: session.user.workspaceId }
+      : {})
   }).lean();
 
   if (!membership) throw new HttpError(403, "No workspace membership");

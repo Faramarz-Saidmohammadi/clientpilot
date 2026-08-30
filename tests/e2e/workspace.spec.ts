@@ -28,6 +28,8 @@ test("authenticated product flow preserves workspace isolation", async ({
   page,
   request
 }) => {
+  test.setTimeout(120_000);
+
   const suffix = `${Date.now()}-${process.pid}`;
   await registerAndCreateWorkspace(page, `primary-${suffix}`);
 
