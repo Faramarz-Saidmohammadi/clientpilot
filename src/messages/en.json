@@ -113,7 +113,8 @@
     "email": "Email",
     "password": "Password",
     "submit": "Create account",
-    "creating": "Creating..."
+    "creating": "Creating...",
+    "failed": "Could not create the account. Check your details or try another email."
   },
   "onboardingPage": {
     "title": "Create workspace",
@@ -187,6 +188,7 @@
   "teamPage": {
     "title": "Team",
     "memberFallback": "Member",
+    "adminOnly": "Only workspace administrators can send invitations.",
     "roles": {
       "owner": "Owner",
       "admin": "Admin",
@@ -196,7 +198,11 @@
   },
   "settingsPage": {
     "title": "Workspace settings",
-    "description": "Branding, timezone and currency settings can be configured here."
+    "description": "Branding, timezone and currency settings can be configured here.",
+    "name": "Workspace",
+    "timezone": "Timezone",
+    "currency": "Currency",
+    "adminOnly": "Only workspace administrators can change these settings."
   },
   "settingsForm": {
     "name": "Workspace name",
@@ -211,7 +217,8 @@
   },
   "billingPage": {
     "title": "Billing",
-    "description": "Manage subscription, invoices and plan status."
+    "description": "Manage subscription, invoices and plan status.",
+    "adminOnly": "Only workspace administrators can change the subscription."
   },
   "projectDetailPage": {
     "notFound": "Project not found.",
@@ -276,7 +283,11 @@
     "itemPlaceholder": "Item",
     "creating": "Creating...",
     "submit": "Create invoice",
-    "markPaid": "Mark paid"
+    "markPaid": "Mark paid",
+    "send": "Send email",
+    "sending": "Sending...",
+    "sent": "Sent",
+    "sendFailed": "Try again"
   },
   "inviteForm": {
     "emailPlaceholder": "member@email.com",
@@ -290,9 +301,12 @@
   },
   "projectFileUpload": {
     "uploading": "Uploading...",
-    "submit": "Upload"
+    "submit": "Upload",
+    "failed": "Upload failed"
   },
   "upgradeButton": {
-    "label": "Upgrade to Pro"
+    "label": "Upgrade to Pro",
+    "loading": "Opening checkout...",
+    "failed": "Could not open checkout"
   }
 }

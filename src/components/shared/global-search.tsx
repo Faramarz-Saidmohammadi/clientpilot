@@ -2,27 +2,52 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 type SearchEntity = { _id: string; name?: string; number?: string };
-type SearchResponse = { clients: SearchEntity[]; projects: SearchEntity[]; invoices: SearchEntity[] };
-type SearchItem = { id: string; label: string; type: "client" | "project" | "invoice"; href: string };
+type SearchResponse = {
+  clients: SearchEntity[];
+  projects: SearchEntity[];
+  invoices: SearchEntity[];
+};
+type SearchItem = {
+  id: string;
+  label: string;
+  type: "client" | "project" | "invoice";
+  href: string;
+};
 
 export function GlobalSearch() {
   const router = useRouter();
   const pathname = usePathname();
   const [q, setQ] = useState("");
   const [results, setResults] = useState<SearchResponse | null>(null);
+  const requestId = useRef(0);
   const t = useTranslations("globalSearch");
   const parts = pathname.split("/").filter(Boolean);
   const locale = parts[0] === "fa" ? "fa" : "en";
 
   const items: SearchItem[] = results
     ? [
-        ...results.clients.map((x) => ({ id: x._id, label: x.name || "-", type: "client" as const, href: `/${locale}/app/clients` })),
-        ...results.projects.map((x) => ({ id: x._id, label: x.name || "-", type: "project" as const, href: `/${locale}/app/projects/${x._id}` })),
-        ...results.invoices.map((x) => ({ id: x._id, label: x.number || "-", type: "invoice" as const, href: `/${locale}/app/invoices` }))
+        ...results.clients.map((x) => ({
+          id: x._id,
+          label: x.name || "-",
+          type: "client" as const,
+          href: `/${locale}/app/clients`
+        })),
+        ...results.projects.map((x) => ({
+          id: x._id,
+          label: x.name || "-",
+          type: "project" as const,
+          href: `/${locale}/app/projects/${x._id}`
+        })),
+        ...results.invoices.map((x) => ({
+          id: x._id,
+          label: x.number || "-",
+          type: "invoice" as const,
+          href: `/${locale}/app/invoices`
+        }))
       ].slice(0, 8)
     : [];
 
@@ -33,12 +58,15 @@ export function GlobalSearch() {
         onChange={async (e) => {
           const value = e.target.value;
           setQ(value);
-          if (!value) {
+          const currentRequest = ++requestId.current;
+          if (value.trim().length < 2) {
             setResults(null);
             return;
           }
           const res = await fetch(`/api/search?q=${encodeURIComponent(value)}`);
-          if (res.ok) setResults((await res.json()) as SearchResponse);
+          if (res.ok && currentRequest === requestId.current) {
+            setResults((await res.json()) as SearchResponse);
+          }
         }}
         onKeyDown={(e) => {
           if (e.key === "Escape") {
@@ -56,7 +84,11 @@ export function GlobalSearch() {
       />
       {results ? (
         <div className="absolute z-20 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-[var(--border)] bg-[var(--card)] p-2 text-sm shadow-xl">
-          {items.length === 0 ? <div className="px-2 py-1.5 text-[var(--muted)]">{t("noResults")}</div> : null}
+          {items.length === 0 ? (
+            <div className="px-2 py-1.5 text-[var(--muted)]">
+              {t("noResults")}
+            </div>
+          ) : null}
           {items.map((item) => (
             <Link
               key={`${item.type}-${item.id}`}
@@ -66,7 +98,11 @@ export function GlobalSearch() {
             >
               <span>{item.label}</span>
               <span className="text-xs text-[var(--muted)]">
-                {item.type === "client" ? t("types.client") : item.type === "project" ? t("types.project") : t("types.invoice")}
+                {item.type === "client"
+                  ? t("types.client")
+                  : item.type === "project"
+                    ? t("types.project")
+                    : t("types.invoice")}
               </span>
             </Link>
           ))}
