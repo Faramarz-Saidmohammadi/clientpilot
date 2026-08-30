@@ -89,6 +89,18 @@ export async function inviteMember(input: {
   if (!limited.ok) throw new Error("Too many invites, try again shortly.");
 
   await connectDb();
+  const existingUser = await User.findOne({ email: parsed.data.email })
+    .select({ _id: 1 })
+    .lean();
+  if (existingUser) {
+    const existingMembership = await Membership.exists({
+      userId: existingUser._id,
+      workspaceId: ctx.workspaceId
+    });
+    if (existingMembership)
+      throw new Error("This user is already a workspace member");
+  }
+
   const token = crypto.randomBytes(24).toString("hex");
   const invite = await Invite.create({
     workspaceId: ctx.workspaceId,
@@ -100,11 +112,16 @@ export async function inviteMember(input: {
   });
 
   const url = `${process.env.NEXT_PUBLIC_APP_URL}/api/invites/accept?token=${token}`;
-  await sendEmail(
-    parsed.data.email,
-    "Workspace invite",
-    `<p>You were invited to ClientPilot. <a href='${url}'>Accept invite</a></p>`
-  );
+  try {
+    await sendEmail(
+      parsed.data.email,
+      "Workspace invite",
+      `<p>You were invited to ClientPilot. <a href='${url}'>Accept invite</a></p>`
+    );
+  } catch (error) {
+    await Invite.deleteOne({ _id: invite._id, workspaceId: ctx.workspaceId });
+    throw error;
+  }
   return { id: String(invite._id) };
 }
 

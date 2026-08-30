@@ -18,12 +18,15 @@ export async function GET(req: Request) {
     const regex = new RegExp(escapeRegex(q), "i");
     const [clients, projects, invoices] = await Promise.all([
       Client.find({ workspaceId: ctx.workspaceId, name: regex })
+        .select({ name: 1 })
         .limit(5)
         .lean(),
       Project.find({ workspaceId: ctx.workspaceId, name: regex })
+        .select({ name: 1 })
         .limit(5)
         .lean(),
       Invoice.find({ workspaceId: ctx.workspaceId, number: regex })
+        .select({ number: 1 })
         .limit(5)
         .lean()
     ]);

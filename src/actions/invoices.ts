@@ -115,7 +115,10 @@ export async function createInvoice(input: unknown) {
       }))
     );
   } catch (error) {
-    await Invoice.deleteOne({ _id: invoice._id, workspaceId: ctx.workspaceId });
+    await Promise.all([
+      InvoiceItem.deleteMany({ invoiceId: invoice._id }),
+      Invoice.deleteOne({ _id: invoice._id, workspaceId: ctx.workspaceId })
+    ]);
     throw error;
   }
 

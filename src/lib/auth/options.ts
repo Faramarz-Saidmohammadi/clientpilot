@@ -81,7 +81,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token }) {
       if (!token.email) return token;
       await connectDb();
-      const user = await User.findOne({ email: token.email }).lean();
+      const user = await User.findOne({
+        email: token.email.toLowerCase()
+      }).lean();
       if (!user) return token;
       token.sub = String(user._id);
       delete token.workspaceId;

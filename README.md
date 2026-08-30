@@ -102,6 +102,8 @@ Core groups include:
 
 Never commit production credentials or populated environment files.
 
+The database name is taken from `MONGODB_URI`; use distinct database names for development, CI, staging, and production.
+
 ## Testing and Verification
 
 ```bash
