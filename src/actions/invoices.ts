@@ -25,7 +25,7 @@ async function reserveInvoiceNumber(workspaceId: string) {
   let counter = await InvoiceCounter.findOneAndUpdate(
     { workspaceId },
     { $inc: { sequence: 1 } },
-    { new: true }
+    { returnDocument: "after" }
   ).lean();
 
   if (!counter) {
@@ -47,7 +47,7 @@ async function reserveInvoiceNumber(workspaceId: string) {
     counter = await InvoiceCounter.findOneAndUpdate(
       { workspaceId },
       { $inc: { sequence: 1 } },
-      { new: true }
+      { returnDocument: "after" }
     ).lean();
   }
 
