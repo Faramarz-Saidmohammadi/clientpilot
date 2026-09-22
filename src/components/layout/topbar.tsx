@@ -19,7 +19,7 @@ export function Topbar({
   return (
     <div className="glass-nav soft-enter sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] px-4 py-3">
       <div className="flex items-center gap-2">
-        <MobileNav items={items} />
+        <MobileNav items={items} locale={locale} />
         <h1 className="text-lg font-semibold">{title}</h1>
       </div>
       <div className="ml-auto flex min-w-0 items-center gap-2">

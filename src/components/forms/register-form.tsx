@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ type Values = z.infer<typeof schema>;
 export function RegisterForm({ locale }: { locale: string }) {
   const t = useTranslations("registerForm");
   const [submitError, setSubmitError] = useState("");
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -41,7 +43,7 @@ export function RegisterForm({ locale }: { locale: string }) {
             setSubmitError(t("failed"));
             return;
           }
-          window.location.assign(`/${locale}/login`);
+          router.push(`/${locale}/login`);
         } catch {
           setSubmitError(t("failed"));
         }

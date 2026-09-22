@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
 import { createWorkspace } from "@/actions/team";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,6 +13,8 @@ export default function OnboardingPage() {
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const t = useTranslations("onboardingPage");
+  const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <section className="mx-auto max-w-lg px-4 py-16">
@@ -29,7 +32,8 @@ export default function OnboardingPage() {
                   slug: String(fd.get("slug")),
                   plan: String(fd.get("plan")) === "pro" ? "pro" : "free"
                 });
-                window.location.href = `${window.location.pathname.replace("/onboarding", "/app")}`;
+                router.push(pathname.replace(/\/onboarding$/, "/app"));
+                router.refresh();
               } catch (err) {
                 setError(err instanceof Error ? err.message : t("failed"));
               }
@@ -46,12 +50,18 @@ export default function OnboardingPage() {
           </div>
           <div>
             <Label htmlFor="plan">{t("plan")}</Label>
-            <select id="plan" name="plan" className="h-10 w-full rounded-md border bg-transparent px-3">
+            <select
+              id="plan"
+              name="plan"
+              className="h-10 w-full rounded-md border bg-transparent px-3"
+            >
               <option value="free">{t("free")}</option>
               <option value="pro">{t("pro")}</option>
             </select>
           </div>
-          {error ? <p className="text-sm text-[var(--danger)]">{error}</p> : null}
+          {error ? (
+            <p className="text-sm text-[var(--danger)]">{error}</p>
+          ) : null}
           <Button disabled={pending} className="w-full">
             {pending ? t("creating") : t("continue")}
           </Button>

@@ -1,6 +1,7 @@
 {
   "brand": "ClientPilot",
   "nav": {
+    "navigation": "Main navigation",
     "features": "Features",
     "pricing": "Pricing",
     "faq": "FAQ",
@@ -56,7 +57,11 @@
     }
   },
   "topbar": {
-    "logout": "Log out"
+    "logout": "Log out",
+    "navigation": "Application navigation",
+    "navigationDescription": "Navigate between ClientPilot sections.",
+    "openNavigation": "Open navigation menu",
+    "closeNavigation": "Close navigation menu"
   },
   "pricing": {
     "free": "Free",

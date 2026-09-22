@@ -23,6 +23,14 @@ async function registerAndCreateWorkspace(page: Page, suffix: string) {
   await expect(page).toHaveURL(/\/en\/app$/);
 }
 
+async function navigateMobile(page: Page, label: string) {
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  const dialog = page.getByRole("dialog", { name: "Application navigation" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("link", { name: label, exact: true }).click();
+  await expect(dialog).toBeHidden();
+}
+
 test("authenticated product flow preserves workspace isolation", async ({
   browser,
   page,
@@ -32,14 +40,25 @@ test("authenticated product flow preserves workspace isolation", async ({
 
   const suffix = `${Date.now()}-${process.pid}`;
   await registerAndCreateWorkspace(page, `primary-${suffix}`);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    page.getByRole("button", { name: "Open navigation menu" })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth
+    )
+  ).toBe(true);
 
-  await page.getByRole("link", { name: "Clients", exact: true }).click();
+  await navigateMobile(page, "Clients");
   await page.getByPlaceholder("Client name").fill("Acme Client");
   await page.getByPlaceholder("Email").fill("billing@acme.test");
   await page.getByRole("button", { name: "Add client" }).click();
   await expect(page.getByText("Acme Client")).toBeVisible();
 
-  await page.getByRole("link", { name: "Projects", exact: true }).click();
+  await navigateMobile(page, "Projects");
   await page.getByPlaceholder("Project name").fill("Acme Portal");
   await page.getByPlaceholder("Budget").fill("12500");
   await page
@@ -65,7 +84,7 @@ test("authenticated product flow preserves workspace isolation", async ({
   expect(fileResponse.status()).toBe(200);
   expect(await fileResponse.text()).toBe("ClientPilot project scope");
 
-  await page.getByRole("link", { name: "Tasks", exact: true }).click();
+  await navigateMobile(page, "Tasks");
   await page.getByPlaceholder("Task title").fill("Security review");
   await page
     .locator('select[name="projectId"]')
@@ -73,7 +92,7 @@ test("authenticated product flow preserves workspace isolation", async ({
   await page.getByRole("button", { name: "Add task" }).click();
   await expect(page.getByText("Security review")).toBeVisible();
 
-  await page.getByRole("link", { name: "Invoices", exact: true }).click();
+  await navigateMobile(page, "Invoices");
   await page
     .locator('select[name="clientId"]')
     .selectOption({ label: "Acme Client" });
