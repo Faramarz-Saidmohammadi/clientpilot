@@ -4,6 +4,8 @@ import { RevenueChart } from "@/components/dashboard/revenue-chart";
 import { listAuditLogs } from "@/actions/audit";
 import { getDashboardMetrics } from "@/actions/dashboard";
 import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { getCurrentMembership } from "@/lib/auth/rbac";
 
 type RawAudit = { _id: string; action: string; createdAt?: Date };
 
@@ -14,8 +16,13 @@ export default async function AppOverviewPage({
 }) {
   const { locale } = await params;
   const safeLocale = locale === "fa" ? "fa" : "en";
-  const t = await getTranslations({ locale: safeLocale });
-  const [metrics, logs] = await Promise.all([
+  const translations = getTranslations({ locale: safeLocale });
+  const current = await getCurrentMembership();
+  if (!current) redirect(`/${safeLocale}/login`);
+  if (!current.membership) redirect(`/${safeLocale}/onboarding`);
+
+  const [t, metrics, logs] = await Promise.all([
+    translations,
     getDashboardMetrics(),
     listAuditLogs().catch(() => []) as Promise<RawAudit[]>
   ]);

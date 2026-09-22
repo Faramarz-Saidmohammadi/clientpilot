@@ -1,30 +1,49 @@
+import { cache } from "react";
 import { getSession } from "@/lib/auth/session";
 import { connectDb } from "@/lib/db";
 import { Membership } from "@/models";
+import { HttpError } from "@/lib/http";
 
 const hierarchy = ["viewer", "member", "admin", "owner"] as const;
 
 type Role = (typeof hierarchy)[number];
 
-export async function requireMembership(minRole: Role = "viewer") {
+export const getCurrentMembership = cache(async () => {
   const session = await getSession();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) return null;
 
   await connectDb();
   const membership = await Membership.findOne({
     userId: session.user.id,
-    workspaceId: session.user.workspaceId
+    ...(session.user.workspaceId
+      ? { workspaceId: session.user.workspaceId }
+      : {})
   }).lean();
-
-  if (!membership) throw new Error("No workspace membership");
-
-  const allowed = hierarchy.indexOf(membership.role as Role) >= hierarchy.indexOf(minRole);
-  if (!allowed) throw new Error("Forbidden");
 
   return {
     userId: session.user.id,
-    workspaceId: String(membership.workspaceId),
-    role: membership.role as Role
+    membership: membership
+      ? {
+          workspaceId: String(membership.workspaceId),
+          role: membership.role as Role
+        }
+      : null
+  };
+});
+
+export async function requireMembership(minRole: Role = "viewer") {
+  const current = await getCurrentMembership();
+  if (!current) throw new HttpError(401, "Unauthorized");
+  if (!current.membership) throw new HttpError(403, "No workspace membership");
+
+  const allowed =
+    hierarchy.indexOf(current.membership.role) >= hierarchy.indexOf(minRole);
+  if (!allowed) throw new HttpError(403, "Forbidden");
+
+  return {
+    userId: current.userId,
+    workspaceId: current.membership.workspaceId,
+    role: current.membership.role
   };
 }
 

@@ -3,7 +3,14 @@ import mongoose, { Schema, type InferSchemaType } from "mongoose";
 const UserSchema = new Schema(
   {
     name: { type: String },
-    email: { type: String, required: true, unique: true, index: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      lowercase: true,
+      trim: true
+    },
     passwordHash: { type: String },
     image: { type: String },
     emailVerified: { type: Date }
@@ -11,5 +18,7 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-export type UserDoc = InferSchemaType<typeof UserSchema> & { _id: mongoose.Types.ObjectId };
+export type UserDoc = InferSchemaType<typeof UserSchema> & {
+  _id: mongoose.Types.ObjectId;
+};
 export const User = mongoose.models.User || mongoose.model("User", UserSchema);

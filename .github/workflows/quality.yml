@@ -16,6 +16,9 @@ jobs:
       MONGODB_URI: mongodb://127.0.0.1:27017/clientpilot-ci
       AUTH_SECRET: clientpilot-ci-secret-at-least-thirty-two-characters
       NEXTAUTH_URL: http://127.0.0.1:3000
+      NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+      INVOICE_LINK_SECRET: clientpilot-ci-invoice-link-secret-at-least-thirty-two
+      CRON_SECRET: clientpilot-ci-cron-secret-at-least-thirty-two
       GOOGLE_CLIENT_ID: ci-google-client
       GOOGLE_CLIENT_SECRET: ci-google-secret
       STRIPE_SECRET_KEY: sk_test_ci_placeholder
@@ -25,10 +28,10 @@ jobs:
       RESEND_API_KEY: re_ci_placeholder
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -65,6 +68,9 @@ jobs:
       MONGODB_URI: mongodb://127.0.0.1:27017/clientpilot-e2e
       AUTH_SECRET: clientpilot-e2e-secret-at-least-thirty-two-characters
       NEXTAUTH_URL: http://127.0.0.1:3000
+      NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+      INVOICE_LINK_SECRET: clientpilot-e2e-invoice-link-secret-at-least-thirty-two
+      CRON_SECRET: clientpilot-e2e-cron-secret-at-least-thirty-two
       GOOGLE_CLIENT_ID: e2e-google-client
       GOOGLE_CLIENT_SECRET: e2e-google-secret
       STRIPE_SECRET_KEY: sk_test_e2e_placeholder
@@ -74,10 +80,10 @@ jobs:
       RESEND_API_KEY: re_e2e_placeholder
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -93,7 +99,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: clientpilot-playwright-report
           path: playwright-report

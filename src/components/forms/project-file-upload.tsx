@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export function ProjectFileUpload({ projectId }: { projectId: string }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const t = useTranslations("projectFileUpload");
 
   return (
@@ -16,13 +17,40 @@ export function ProjectFileUpload({ projectId }: { projectId: string }) {
         const fd = new FormData(e.currentTarget);
         fd.append("projectId", projectId);
         setLoading(true);
-        await fetch("/api/upload", { method: "POST", body: fd });
-        setLoading(false);
-        window.location.reload();
+        setError("");
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: fd
+          });
+          if (!response.ok) {
+            const body = (await response.json().catch(() => null)) as {
+              error?: string;
+            } | null;
+            setError(body?.error || t("failed"));
+            return;
+          }
+          window.location.reload();
+        } finally {
+          setLoading(false);
+        }
       }}
     >
-      <input type="file" name="file" required className="text-sm" />
-      <Button disabled={loading}>{loading ? t("uploading") : t("submit")}</Button>
+      <input
+        type="file"
+        name="file"
+        accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,application/pdf,image/jpeg,image/png,image/webp,text/plain"
+        required
+        className="min-w-0 text-sm"
+      />
+      <Button disabled={loading}>
+        {loading ? t("uploading") : t("submit")}
+      </Button>
+      {error ? (
+        <p className="text-sm text-[var(--danger)]" role="alert">
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

@@ -18,6 +18,7 @@ ClientPilot is a multi-tenant workspace for managing client relationships, proje
 ## Technology Stack
 
 ### Application
+
 - Next.js App Router
 - React 19
 - TypeScript
@@ -28,17 +29,20 @@ ClientPilot is a multi-tenant workspace for managing client relationships, proje
 - TanStack Table
 
 ### Backend and Data
+
 - MongoDB
 - Mongoose
 - Server Actions and route handlers
 - Zod validation
 
 ### Authentication and Integrations
+
 - NextAuth with credentials and Google sign-in
 - Stripe Checkout and webhooks
 - Resend transactional email
 
 ### Quality
+
 - ESLint
 - Vitest
 - Playwright
@@ -91,11 +95,14 @@ Use `.env.example` as the reference. Configure real credentials outside version 
 Core groups include:
 
 - MongoDB connection
-- authentication secret and Google OAuth credentials
+- authentication secret, public application URL, and optional Google OAuth credentials
+- independent secrets for signed invoice links and scheduled-job authentication
 - Stripe secret, price IDs, and webhook secret
 - Resend API key and verified sender address
 
 Never commit production credentials or populated environment files.
+
+The database name is taken from `MONGODB_URI`; use distinct database names for development, CI, staging, and production.
 
 ## Testing and Verification
 
@@ -138,4 +145,4 @@ ClientPilot can run on a Node-compatible deployment platform with MongoDB and th
 
 ## Security
 
-Security-sensitive changes should preserve tenant isolation, authorization checks, input validation, webhook verification, and secret handling. See `SECURITY.md` for reporting guidance and review expectations.
+Security-sensitive changes should preserve tenant isolation, authorization checks, input validation, webhook verification, signed external invoice links, authenticated scheduled jobs, and secret handling. Project files are limited to approved types and 5 MB. See `SECURITY.md` for reporting guidance and review expectations.

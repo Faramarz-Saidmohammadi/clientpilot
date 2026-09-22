@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getSession } from "@/lib/auth/session";
-import { connectDb } from "@/lib/db";
-import { Membership } from "@/models";
+import { getCurrentMembership } from "@/lib/auth/rbac";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 
@@ -16,12 +14,9 @@ export default async function AppLayout({
 }) {
   const { locale } = await params;
   const safeLocale = locale === "fa" ? "fa" : "en";
-  const session = await getSession();
-  if (!session?.user) redirect(`/${locale}/login`);
-
-  await connectDb();
-  const membership = await Membership.findOne({ userId: session.user.id }).lean();
-  if (!membership) redirect(`/${locale}/onboarding`);
+  const current = await getCurrentMembership();
+  if (!current) redirect(`/${safeLocale}/login`);
+  if (!current.membership) redirect(`/${safeLocale}/onboarding`);
 
   const t = await getTranslations({ locale: safeLocale, namespace: "app" });
   const items = [
@@ -35,7 +30,7 @@ export default async function AppLayout({
     ["/team", t("team")],
     ["/settings", t("settings")],
     ["/billing", t("billing")]
-  ].map(([href, label]) => ({ href: `/${locale}/app${href}`, label }));
+  ].map(([href, label]) => ({ href: `/${safeLocale}/app${href}`, label }));
 
   return (
     <div className="soft-enter flex min-h-screen">
@@ -46,7 +41,7 @@ export default async function AppLayout({
           <div className="soft-enter">{children}</div>
         </main>
       </div>
-      <Link href={`/${locale}`} className="sr-only">Home</Link>
+      <Link href={`/${safeLocale}`} className="sr-only">Home</Link>
     </div>
   );
 }
